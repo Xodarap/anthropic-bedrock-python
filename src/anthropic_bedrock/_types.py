@@ -43,7 +43,9 @@ _T = TypeVar("_T")
 # while adding support for `PathLike` instances
 ProxiesDict = Dict["str | URL", Union[None, str, URL, Proxy]]
 ProxiesTypes = Union[str, Proxy, ProxiesDict]
-FileContent = Union[IO[bytes], bytes, PathLike[str]]
+# The type signature of PathLike changes between Python 3.8 and 3.9; this chooses the correct variant
+PathLikeType = PathLike[str] if hasattr(PathLike, "__getitem__") else PathLike
+FileContent = Union[IO[bytes], bytes, PathLikeType]
 FileTypes = Union[
     # file (or bytes)
     FileContent,
